@@ -1,8 +1,0 @@
-{% extends 'base.html.twig' %}
-
-
-{% block body %}
-{% for livre in livre_list %}
-    <a href={{ path('app_livre_id', {'id': livre.id}) }}>{{ livre.titre }}</a>
-{% endfor %}
-{% endblock %}

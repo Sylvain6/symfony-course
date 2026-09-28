@@ -7,13 +7,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LivreType extends AbstractType
+class Livre1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('titre')
             ->add('description')
+            ->add('auteur')
+            ->add('dateDeParution', null, [
+                'widget' => 'single_text'
+            ])
         ;
     }
 

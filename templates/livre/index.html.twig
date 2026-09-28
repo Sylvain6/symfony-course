@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livre index{% endblock %}
+
+{% block body %}
+    <h1>Livre index</h1>
+
+    <p style="color: red;">{{ error }}</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Auteur</th>
+                <th>DateDeParution</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livre in livres %}
+            <tr>
+                <td>{{ livre.id }}</td>
+                <td>{{ livre.titre }}</td>
+                <td>{{ livre.description }}</td>
+                <td>{{ livre.auteur }}</td>
+                <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_livre_emprunter', {'id': livre.id}) }}">Emprunter</a>
+                    {% if (app.user is not null) and ('ROLE_ADMIN' in app.user.getroles()) %}
+                        <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>
+                        <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>
+                    {% endif %}
+                    </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if (app.user is not null) and ('ROLE_ADMIN' in app.user.getroles()) %}
+        <a href="{{ path('app_livre_new') }}">Create new</a>
+    {% endif %}
+{% endblock %}

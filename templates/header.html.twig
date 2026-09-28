@@ -1,6 +1,28 @@
 <header>
+    {% if app.user is null %}
+        <h3>Déconnecté</h3>
+    {% else %}
+        <h3>Email connectée : {{ app.user.email }}
+        {% if (app.user is not null) and ('ROLE_ADMIN' in app.user.getroles()) %}
+            <br>Role : ADMIN</h3>
+        {% else %}
+            </h3>
+        {% endif %}
+    {% endif %}
     <nav>
         <a href={{ path('app_home') }}>Accueil</a>
-        <a href={{ path('app_livre_list') }}>Liste</a>
+        <a href={{ path('app_livre_index') }}>Livres</a>
+        {% if app.user is not null %}
+            <a href={{ path('app_emprunt_index') }}>Emprunts</a>
+            {% if 'ROLE_ADMIN' in app.user.getroles() %}
+                <a href={{ path('app_membre_index') }}>Membres</a>
+            {% endif %}
+        {% endif %}
+        {% if app.user is null %}
+            <a href={{ path('app_login') }}>Se connecter</a>
+            <a href={{ path('app_register') }}>S'inscrire</a>
+        {% else %}
+            <a href={{ path('app_logout') }}>Se déconnecter</a>
+        {% endif %}
     </nav>
 </header>
