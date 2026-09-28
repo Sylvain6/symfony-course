@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sélection de livres{% endblock %}
+
+{% block body %}
+    <h1>Sélection de livres</h1>
+
+    <ul>
+        {% for livre in livres %}
+            <li>
+                <a href="{{ path('livre_show', {id: livre.id}) }}">
+                    {{ livre.titre }}
+                </a>
+            </li>
+        {% else %}
+            <li>Aucun livre.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
