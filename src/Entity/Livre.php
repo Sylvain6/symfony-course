@@ -20,6 +20,12 @@ class Livre
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $auteur = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $dateDeParution = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +51,30 @@ class Livre
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAuteur(): ?string
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(string $auteur): static
+    {
+        $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getDateDeParution(): ?\DateTimeImmutable
+    {
+        return $this->dateDeParution;
+    }
+
+    public function setDateDeParution(\DateTimeImmutable $dateDeParution): static
+    {
+        $this->dateDeParution = $dateDeParution;
 
         return $this;
     }
