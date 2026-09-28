@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+{% if livre.id %}
+    <p>
+    Titre : {{ livre.titre }}<br>
+    Contenu : {{ livre.description }}<br>
+    </p>
+{% endif %}
+{% endblock %}
