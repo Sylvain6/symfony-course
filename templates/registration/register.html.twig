@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <h1>Inscription</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.nom) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="btn">S'inscrire</button>
+    {{ form_end(registrationForm) }}
+
+    <p>
+        Déjà un compte ?
+        <a href="{{ path('app_login') }}">Se connecter</a>
+    </p>
+
+    <dialog id="conditions">
+        <h2>Conditions d'utilisation</h2>
+        <p><em>Dernière mise à jour : 28 septembre 2026</em></p>
+
+        <h3>1. Objet</h3>
+        <p>Les présentes conditions encadrent l'utilisation de la bibliothèque en ligne. En créant un compte, le membre accepte l'ensemble de ces règles.</p>
+
+        <h3>2. Création de compte</h3>
+        <p>Le membre s'engage à fournir un nom et une adresse email valides. Chaque compte est personnel : il est interdit de le prêter ou de le partager.</p>
+
+        <h3>3. Emprunts</h3>
+        <p>Un livre ne peut être emprunté que par un seul membre à la fois. Le membre s'engage à rendre les livres empruntés en bon état et dans un délai raisonnable. Un membre ne peut pas emprunter au nom d'un autre membre.</p>
+
+        <h3>4. Rôle de l'administrateur</h3>
+        <p>L'administrateur gère le catalogue et les emprunts. Il peut enregistrer, clôturer ou consulter les emprunts de tous les membres.</p>
+
+        <h3>5. Données personnelles</h3>
+        <p>Les données collectées (nom, email, historique des emprunts) servent uniquement au fonctionnement du service. Elles ne sont ni vendues ni transmises à des tiers. Le mot de passe est stocké de manière chiffrée.</p>
+
+        <h3>6. Suspension du compte</h3>
+        <p>En cas de non-respect de ces conditions, l'administrateur peut suspendre ou supprimer le compte d'un membre.</p>
+
+        <h3>7. Modification des conditions</h3>
+        <p>Ces conditions peuvent être modifiées à tout moment. Les membres seront informés de tout changement important.</p>
+
+        <p><small>Document fictif réalisé dans le cadre d'un projet de formation.</small></p>
+
+        <button type="button" id="fermer-conditions">Fermer</button>
+    </dialog>
+
+    <style>
+        #conditions {
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #333;
+            padding: 20px;
+        }
+    </style>
+
+    <script>
+        const fenetre = document.getElementById('conditions');
+
+        document.getElementById('voir-conditions').addEventListener('click', (e) => {
+            e.preventDefault();
+            fenetre.showModal();
+        });
+
+        document.getElementById('fermer-conditions').addEventListener('click', () => {
+            fenetre.close();
+        });
+    </script>
+{% endblock %}

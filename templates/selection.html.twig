@@ -5,10 +5,19 @@
 {% block body %}
     <h1>Sélection de livres</h1>
 
+    <form method="get" action="{{ path('selection_livre') }}">
+        <input type="text" name="q" value="{{ recherche }}" placeholder="Rechercher un titre">
+        <button type="submit">Rechercher</button>
+    </form>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_livre_new') }}">Ajouter un livre</a>
+    {% endif %}
+
     <ul>
         {% for livre in livres %}
             <li>
-                <a href="{{ path('livre_show', {id: livre.id}) }}">
+                <a href="{{ path('app_livre_show', {id: livre.id}) }}">
                     {{ livre.titre }}
                 </a>
             </li>

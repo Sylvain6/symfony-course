@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ livre.titre }}{% endblock %}
+
+{% block body %}
+    <h1>{{ livre.titre }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ livre.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ livre.titre }}</td>
+            </tr>
+            <tr>
+                <th>Auteur</th>
+                <td>{{ livre.auteur }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ livre.description ? livre.description|nl2br : 'Aucune description.' }}</td>
+            </tr>
+            <tr>
+                <th>Ajouté le</th>
+                <td>{{ livre.createdAt ? livre.createdAt|date('d/m/Y à H:i') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Emprunt</h2>
+
+    {% if empruntEnCours is null %}
+        <p>Disponible</p>
+
+        <form method="post" action="{{ path('app_livre_emprunter', {id: livre.id}) }}">
+            {% if is_granted('ROLE_ADMIN') %}
+                <select name="membre">
+                    {% for membre in membres %}
+                        <option value="{{ membre.id }}" {% if membre.id == app.user.id %}selected{% endif %}>{{ membre.nom }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+            <button type="submit">Emprunter</button>
+        </form>
+    {% else %}
+        {% if empruntEnCours.membre.id == app.user.id %}
+            <p>Tu as emprunté ce livre le {{ empruntEnCours.dateEmprunt|date('d/m/Y') }}.</p>
+        {% elseif is_granted('ROLE_ADMIN') %}
+            <p>Emprunté par {{ empruntEnCours.membre.nom }} le {{ empruntEnCours.dateEmprunt|date('d/m/Y') }}.</p>
+        {% else %}
+            <p>Ce livre est actuellement emprunté.</p>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') or empruntEnCours.membre.id == app.user.id %}
+            <form method="post" action="{{ path('app_livre_rendre', {id: livre.id}) }}">
+                <button type="submit">Rendre le livre</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <p>
+        <a href="{{ path('selection_livre') }}">Retour à la liste</a>
+    </p>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">Modifier</a>
+        {{ include('livre/_delete_form.html.twig') }}
+    {% endif %}
+{% endblock %}

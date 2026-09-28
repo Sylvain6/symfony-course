@@ -1,6 +1,16 @@
 <header>
             <nav>
                 <a href="{{path('app_home')}}">Page D'accueil</a>
+                {% if app.user %}
+                    <span>Connecté : {{ app.user.nom }}</span>
+                    <a href="{{ path('app_logout') }}">Déconnexion</a>
+                {% endif %}
+                {% if app.user %}
+                    <a href="{{ path('app_mes_emprunts') }}">Mes emprunts</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_admin_emprunts') }}">Tous les emprunts</a>
+                {% endif %}
+                {% endif %}
             </nav>
         </header>
 

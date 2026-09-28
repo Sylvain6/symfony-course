@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ titre }}{% endblock %}
+
+{% block body %}
+    <h1>{{ titre }}</h1>
+
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Livre</th>
+                <th>Membre</th>
+                <th>Emprunté le</th>
+                <th>Rendu le</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emprunt in emprunts %}
+                <tr>
+                    <td>
+                        <a href="{{ path('app_livre_show', {id: emprunt.livre.id}) }}">{{ emprunt.livre.titre }}</a>
+                    </td>
+                    <td>{{ emprunt.membre.nom }}</td>
+                    <td>{{ emprunt.dateEmprunt|date('d/m/Y H:i') }}</td>
+                    <td>{{ emprunt.dateRetour ? emprunt.dateRetour|date('d/m/Y H:i') : 'En cours' }}</td>
+                    <td>
+                        {% if emprunt.dateRetour is null %}
+                            <form method="post" action="{{ path('app_livre_rendre', {id: emprunt.livre.id}) }}">
+                                <button type="submit">Rendre</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5">Aucun emprunt.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
